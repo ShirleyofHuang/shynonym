@@ -1,0 +1,14 @@
+{
+  "happy": {
+    "definition": "Feeling or showing pleasure or contentment.",
+    "related": ["joyful", "cheerful", "content"]
+  },
+  "sad": {
+    "definition": "Feeling or showing sorrow.",
+    "related": ["unhappy", "down", "sorrowful"]
+  },
+  "fast": {
+    "definition": "Moving at high speed.",
+    "related": ["quick", "rapid", "speedy"]
+  }
+}
