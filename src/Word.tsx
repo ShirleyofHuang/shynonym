@@ -3,6 +3,7 @@ import dictionaryData from "./synonyms/synonyms.json"
 import type { Dictionary, WordEntry } from "./types/types";
 import { Definition } from "./components/Definition";
 import { LetterBox } from "./components/LetterBox";
+import { WordInput } from "./components/WordInput";
 
 const dictionary = dictionaryData as Dictionary;
 const words = Object.keys(dictionary);
@@ -21,6 +22,7 @@ const WordCard = () => {
   const [currentWord, setCurrentWord] = useState<string>(getRandomWord());
   const [synonym, setSynonym] = useState<string>('')
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
+  const [curInput, setCurInput] = useState<string>('')
 
   const entry = dictionary[currentWord];
 
@@ -45,13 +47,8 @@ const WordCard = () => {
         </p>
       )}
       <p>The synonym has: {synonym.length} letters</p>
-      <div className="d-flex gap-1 justify-content-center">
-      {synonym.split("").map((letter, index) => (
-        <LetterBox show={false} key={index} letter={letter} />
-      ))}
-      </div>
-        {/* <input onChange={(e) => setUserInput(e.target.value)} value={userInput} /> */}
-        <button>Submit</button>
+        <WordInput maxLength={synonym.length} onChange={} />
+        <button className="mt-5" disabled={}> Submit</button>
 
       <button onClick={handleNewWord}>
         New Random Word
