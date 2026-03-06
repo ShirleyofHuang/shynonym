@@ -55,7 +55,7 @@ const WordCard = () => {
       <p>The synonym has: {synonym.length} letters</p>
       <div className="d-flex gap-1 justify-content-center">
       {synonym.split("").map((letter, index) => (
-        <LetterBox show={false} key={index} letter={letter} isActive={true} />
+        <LetterBox show={false} key={index} letter={letter} />
       ))}
       </div>
         {/* <input onChange={(e) => setUserInput(e.target.value)} value={userInput} /> */}
