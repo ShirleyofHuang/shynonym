@@ -1,0 +1,274 @@
+
+// Documentation: <https://getbootstrap.com/docs/5.0/utilities/api/>
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/utilities';
+
+$utilities: map-merge(
+  $utilities,
+  (
+    // opacity-{num}-hover
+    'opacity':
+      (
+        property: opacity,
+        class: opacity,
+        state: hover,
+        values: (
+          0: 0,
+          25: 0.25,
+          50: 0.5,
+          75: 0.75,
+          90: 0.9,
+          100: 1,
+        ),
+      ),
+
+    'bg-opacity': (
+      property: --bs-bg-opacity,
+      class: bg-opacity,
+      state: hover,
+      values: (
+        0: 0,
+        10: 0.1,
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        90: 0.9,
+        100: 1,
+      ),
+    ),
+
+    'z-index':
+      map-merge(
+        map-get($utilities, 'z-index'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'z-index'), 'values'),
+              (
+                below-dashboard-bar-1: calc(var(--dashboard-bar-zindex) - 1),
+              )
+            ),
+        )
+      ),
+    'padding-start':
+      map-merge(
+        map-get($utilities, 'padding-start'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'padding-start'), 'values'),
+              (
+                2rem: 2rem,
+              )
+            ),
+        )
+      ),
+    // w-{num}
+    'width':
+      map-merge(
+        map-get($utilities, 'width'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'width'), 'values'),
+              (
+                90: 90%,
+              )
+            ),
+        )
+      ),
+    // mw-N
+    'max-width':
+      map-merge(
+        map-get($utilities, 'max-width'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'max-width'), 'values'),
+              (
+                none: none,
+                12rem: 12rem,
+                20rem: 20rem,
+                40vw: 40vw,
+              )
+            ),
+        )
+      ),
+    // Bootstrap does not seem to have any built-in defintions for min-width
+    'min-width':
+      (
+        property: min-width,
+        class: minw,
+        values: (
+          5rem: 5rem,
+          40rem: 40rem,
+          60vw: 60vw,
+          75vw: 75vw,
+        ),
+      ),
+    // wf-{num}
+    'width-fixed':
+      (
+        property: width,
+        class: wf,
+        values: (
+          0: 0,
+          1: 0.25rem,
+          2: 0.5rem,
+          3: 1rem,
+          4: 1.5rem,
+          5: 3rem,
+          2rem: 2rem,
+          2_5rem: 2.5rem,
+          5rem: 5rem,
+          6rem: 6rem,
+          8rem: 8rem,
+          10rem: 10rem,
+          12rem: 12rem,
+          16rem: 16rem,
+          20rem: 20rem,
+          24rem: 24rem,
+          32rem: 32rem,
+          40rem: 40rem,
+          42rem: 42rem,
+          64rem: 64rem,
+          60vw: 60vw,
+          1px: 1px,
+          fit-content: fit-content,
+        ),
+      ),
+    // wh-{num}
+    'height-fixed':
+      (
+        property: height,
+        class: hf,
+        values: (
+          0: 0,
+          1: 0.25rem,
+          2: 0.5rem,
+          3: 1rem,
+          4: 1.5rem,
+          5: 3rem,
+          1px: 1px,
+          2rem: 2rem,
+          50vh: 50vh,
+          60vh: 60vh,
+          70vh: 70vh,
+        ),
+      ),
+    // mh-{num}
+    'max-height':
+      map-merge(
+        map-get($utilities, 'max-height'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'max-height'), 'values'),
+              (
+                none: none,
+                10rem: 10rem,
+                40vh: 40vh,
+                50vh: 50vh,
+                70vh: 70vh,
+              )
+            ),
+        )
+      ),
+    // minh-{num}
+    'min-height':
+      (
+        property: min-height,
+        class: minh,
+        values: (
+          10vh: 10vh,
+        ),
+      ),
+    // cursor-{type}
+    'cursor':
+      (
+        property: cursor,
+        class: cursor,
+        values: (
+          pointer: pointer,
+          grab: grab,
+          col-resize: col-resize,
+        ),
+      ),
+
+    // color-{colorname}
+    'color':
+      map-merge(
+        map-get($utilities, 'color'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'color'), 'values'),
+              (
+                reset: inherit,
+                purple: #a103fc,
+              )
+            ),
+        )
+      ),
+    // white-space-{}
+    'white-space':
+      map-merge(
+        map-get($utilities, 'white-space'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'white-space'), 'values'),
+              (
+                prewrap: pre-wrap,
+                nowrap: nowrap,
+                normal: normal,
+              )
+            ),
+        )
+      ),
+    'word-break': (
+      property: word-break,
+      class: word-break,
+      values: (
+        break-word: break-word,
+      ),
+    ),
+    // bg-{color}-hover
+    'background-color':
+      (
+        property: background-color,
+        class: bg,
+        local-vars: (
+          'bg-opacity': 1,
+        ),
+        state: hover,
+        values:
+          map-merge(
+            $utilities-bg-colors,
+            (
+                'hidden': '#e0e0e0',
+              'transparent': transparent,
+              'anti-body': rgba(from var(--bs-anti-body-bg) r g b / var(--bs-bg-opacity)),
+              'active-nav-tab': var(--bs-nav-tabs-link-active-bg),
+            )
+          ),
+      )
+  )
+);
+
+$reactSelectPrefixes: ('bsrs', 'rs');
+
+@each $prefix in $reactSelectPrefixes {
+  .#{$prefix}__placeholder {
+    opacity: 0.5;
+  }
+}
+
+::placeholder {
+  opacity: 0.5 !important;
+}
+
+@import 'bootstrap/scss/bootstrap';

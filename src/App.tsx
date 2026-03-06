@@ -2,7 +2,7 @@ import WordCard from "./Word";
 
 function App() {
   return (
-    <div style={{ padding: "40px" }}>
+    <div className="d-flex w-100 h-100 align-items-center justify-content-center">
       <WordCard />
     </div>
   );

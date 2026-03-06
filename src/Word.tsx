@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import dictionaryData from "./synonyms/synonyms.json"
 import type { Dictionary, WordEntry } from "./types/types";
+import { Definition } from "./components/Definition";
+import { LetterBox } from "./components/LetterBox";
 
 const dictionary = dictionaryData as Dictionary;
 const words = Object.keys(dictionary);
@@ -44,16 +46,19 @@ const WordCard = () => {
 
   return (
     <div className="d-flex flex-column">
-      <h2>{currentWord}</h2>
-      <p>{entry.definition}</p>
+      <Definition word={currentWord} definition={entry.definition} />
       {isCorrect !== null && (
         <p style={{ color: isCorrect ? "green" : "red", fontWeight: "bold" }}>
           {isCorrect ? "You are right!" : "Wrong answer!"}
         </p>
       )}
       <p>The synonym has: {synonym.length} letters</p>
-
-        <input onChange={(e) => setUserInput(e.target.value)} value={userInput} />
+      <div className="d-flex gap-1 justify-content-center">
+      {synonym.split("").map((letter, index) => (
+        <LetterBox show={false} key={index} letter={letter} isActive={true} />
+      ))}
+      </div>
+        {/* <input onChange={(e) => setUserInput(e.target.value)} value={userInput} /> */}
         <button onClick={checkAnswer} >Submit</button>
 
       <button onClick={handleNewWord}>
