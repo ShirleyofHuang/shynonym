@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import dictionaryData from "./synonyms/synonyms.json"
+import dictionaryData from "./synonyms/synonyms.json";
 import type { Dictionary, WordEntry } from "./types/types";
 import { Definition } from "./components/Definition";
-import { LetterBox } from "./components/LetterBox";
+import { WordInput } from "./components/WordInput";
 
 const dictionary = dictionaryData as Dictionary;
 const words = Object.keys(dictionary);
@@ -13,28 +13,78 @@ const getRandomWord = (): string => {
 };
 
 const getRandomSynonym = (word: WordEntry): string => {
-    const randomIndex = Math.floor(Math.random() * word.related.length)
-    return word.related[randomIndex]
-}
+  const randomIndex = Math.floor(Math.random() * word.related.length);
+  return word.related[randomIndex];
+};
 
 const WordCard = () => {
-  const [currentWord, setCurrentWord] = useState<string>(getRandomWord());
-  const [synonym, setSynonym] = useState<string>('')
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
+  const [currentWord] = useState(() => getRandomWord());
+  const [synonym] = useState(() => getRandomSynonym(dictionary[currentWord]));
+  // const [synonym, setSynonym] = useState<string>("");
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [curInput, setCurInput] = useState<string[]>(
+    new Array(synonym.length).fill(""),
+  );
+  const [hints, setHints] = useState<Record<number, string>>({});
 
   const entry = dictionary[currentWord];
 
-  useEffect(() => {
-    if (currentWord) {
-        setSynonym(getRandomSynonym(dictionary[currentWord]))
-        setIsCorrect(null)
-    }   
-  }, [currentWord])
+  // useEffect(() => {
+  //   if (currentWord) {
+  //     // setSynonym(getRandomSynonym(dictionary[currentWord]));
+  //     setIsCorrect(null);
+  //     // setCurInput(new Array(synonym.length).fill(""));
+  //   }
+  // }, []);
 
-  const handleNewWord = () => {
-    setCurrentWord(getRandomWord());
+  // useEffect(() => {
+  //   if (!isCorrect) { // user is wrong and we should give a hint
+  //     // setCurInput(new Array(currentWord.length))
+  //     let randomIndex = Math.floor(Math.random() * synonym.length);
+  //     while (hints?.includes(randomIndex)) {
+  //       randomIndex = Math.floor(Math.random() * synonym.length);
+  //     }
+  //     setHints(prev => [...prev, randomIndex])
+  //   }
+  // }, [isCorrect])
+
+  // const handleNewWord = () => {
+  //   setCurrentWord(getRandomWord());
+  // };
+
+  const verifyWord = () => {
+    if (curInput.join("").toLowerCase() === synonym) {
+      setIsCorrect(true);
+    } else {
+      setIsCorrect(false);
+      setCurInput(new Array(synonym.length).fill(""));
+      setTimeout(() => {
+        setIsCorrect(null);
+      }, 3000); // 3 seconds
+      let randomIndex = Math.floor(Math.random() * synonym.length);
+      while (hints[randomIndex]) {
+        randomIndex = Math.floor(Math.random() * synonym.length);
+      }
+      // Update hints
+      setHints((prev) => ({
+        ...prev, // copy existing hints
+        [randomIndex]: synonym.charAt(randomIndex), // reveal new letter
+      }));
+
+      // Also update curInput at the same index
+      //  setHints((prev) => (prev[randomIndex] = synonym.charAt(randomIndex)));
+    }
   };
 
+  useEffect(() => {
+    setCurInput((prev) => {
+      const next = [...prev];
+      Object.keys(hints).forEach((key) => {
+        next[Number(key)] = hints[Number(key)];
+      });
+      return next;
+    });
+  }, [hints]);
 
   return (
     <div className="d-flex flex-column">
@@ -45,17 +95,23 @@ const WordCard = () => {
         </p>
       )}
       <p>The synonym has: {synonym.length} letters</p>
-      <div className="d-flex gap-1 justify-content-center">
-      {synonym.split("").map((letter, index) => (
-        <LetterBox show={false} key={index} letter={letter} />
-      ))}
-      </div>
-        {/* <input onChange={(e) => setUserInput(e.target.value)} value={userInput} /> */}
-        <button>Submit</button>
-
-      <button onClick={handleNewWord}>
-        New Random Word
+      <WordInput
+        maxLength={synonym.length}
+        letters={curInput}
+        onChange={(word) => setCurInput(word)}
+        actualWord={synonym}
+        givenIndex={hints}
+      />
+      <button
+        onClick={verifyWord}
+        className="mt-5"
+        disabled={curInput.some((item) => item === "")}
+      >
+        {" "}
+        Submit
       </button>
+
+      {/* <button onClick={handleNewWord}>New Random Word</button> */}
     </div>
   );
 };

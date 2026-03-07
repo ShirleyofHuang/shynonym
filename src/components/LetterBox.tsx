@@ -1,15 +1,29 @@
 interface Props {
-    letter: string, 
-    show: boolean,
+  correctLetter: string;
+  letter: string;
+  show: boolean;
+  isActive: boolean;
+  onClick?: () => void;
 }
 
-export const LetterBox: React.FC<Props>  = ({letter, show}) => {
-
+export const LetterBox: React.FC<Props> = ({
+  letter,
+  correctLetter,
+  show,
+  isActive,
+  onClick,
+}) => {
   return (
-    <div className="d-flex">
-        {show ? <div>{letter}</div> : <div className="wf-2rem hf-2rem bg-secondary rounded-2"></div>}
-      
+    <div className="d-flex" onClick={onClick}>
+      <div
+        className={`wf-5 hf-5 ${show ? "" : "bg-secondary"} rounded-2 opacity-25 ${
+          isActive ? "border border-3 border-black" : ""
+        }`}
+      >
+        <h1 className="text-black fw-bolder opacity-100">
+          {show ? correctLetter.toUpperCase() : letter}
+        </h1>
+      </div>
     </div>
   );
 };
-
