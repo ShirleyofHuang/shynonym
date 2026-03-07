@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import dictionaryData from "./synonyms/synonyms.json";
 import type { Dictionary, WordEntry } from "./types/types";
 import { Definition } from "./components/Definition";
-import { LetterBox } from "./components/LetterBox";
 import { WordInput } from "./components/WordInput";
 
 const dictionary = dictionaryData as Dictionary;
