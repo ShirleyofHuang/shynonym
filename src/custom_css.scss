@@ -1,22 +1,19 @@
-
 // Documentation: <https://getbootstrap.com/docs/5.0/utilities/api/>
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'bootstrap/scss/variables-dark';
-@import 'bootstrap/scss/maps';
-@import 'bootstrap/scss/utilities';
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/utilities";
 
 $utilities: map-merge(
   $utilities,
   (
     // w-{num}
-    'width':
-      map-merge(
-        map-get($utilities, 'width'),
+    "width": map-merge(
+        map-get($utilities, "width"),
         (
-          values:
-            map-merge(
-              map-get(map-get($utilities, 'width'), 'values'),
+          values: map-merge(
+              map-get(map-get($utilities, "width"), "values"),
               (
                 90: 90%,
               )
@@ -24,13 +21,11 @@ $utilities: map-merge(
         )
       ),
     // mw-N
-    'max-width':
-      map-merge(
-        map-get($utilities, 'max-width'),
+    "max-width": map-merge(
+        map-get($utilities, "max-width"),
         (
-          values:
-            map-merge(
-              map-get(map-get($utilities, 'max-width'), 'values'),
+          values: map-merge(
+              map-get(map-get($utilities, "max-width"), "values"),
               (
                 none: none,
                 12rem: 12rem,
@@ -41,8 +36,7 @@ $utilities: map-merge(
         )
       ),
     // Bootstrap does not seem to have any built-in defintions for min-width
-    'min-width':
-      (
+    "min-width": (
         property: min-width,
         class: minw,
         values: (
@@ -53,8 +47,7 @@ $utilities: map-merge(
         ),
       ),
     // wf-{num}
-    'width-fixed':
-      (
+    "width-fixed": (
         property: width,
         class: wf,
         values: (
@@ -68,8 +61,7 @@ $utilities: map-merge(
         ),
       ),
     // wh-{num}
-    'height-fixed':
-      (
+    "height-fixed": (
         property: height,
         class: hf,
         values: (
@@ -87,13 +79,11 @@ $utilities: map-merge(
         ),
       ),
     // mh-{num}
-    'max-height':
-      map-merge(
-        map-get($utilities, 'max-height'),
+    "max-height": map-merge(
+        map-get($utilities, "max-height"),
         (
-          values:
-            map-merge(
-              map-get(map-get($utilities, 'max-height'), 'values'),
+          values: map-merge(
+              map-get(map-get($utilities, "max-height"), "values"),
               (
                 none: none,
                 10rem: 10rem,
@@ -105,18 +95,17 @@ $utilities: map-merge(
         )
       ),
     // minh-{num}
-    'min-height':
-      (
+    "min-height": (
         property: min-height,
         class: minh,
         values: (
           10vh: 10vh,
         ),
-      ),
+      )
   )
 );
 
-$reactSelectPrefixes: ('bsrs', 'rs');
+$reactSelectPrefixes: ("bsrs", "rs");
 
 @each $prefix in $reactSelectPrefixes {
   .#{$prefix}__placeholder {
@@ -128,4 +117,4 @@ $reactSelectPrefixes: ('bsrs', 'rs');
   opacity: 0.5 !important;
 }
 
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
