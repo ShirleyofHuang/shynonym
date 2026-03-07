@@ -7,6 +7,7 @@ interface Props {
   letters: string[];
   maxLength: number;
   onChange: (letters: string[]) => void;
+  givenIndex: number[];
 }
 
 export const WordInput: React.FC<Props> = ({
@@ -14,7 +15,9 @@ export const WordInput: React.FC<Props> = ({
   actualWord,
   maxLength,
   onChange,
+  givenIndex,
 }) => {
+  console.log(letters, "this is the current input");
   const [cursorPos, setCursorPos] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -52,7 +55,7 @@ export const WordInput: React.FC<Props> = ({
               inputRef.current?.focus();
               setCursorPos(index);
             }}
-            show={true}
+            show={givenIndex.includes(index)}
             key={index}
             correctLetter={actualWord.charAt(index)}
             letter={letters[index]}

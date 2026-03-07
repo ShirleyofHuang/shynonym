@@ -15,13 +15,15 @@ export const LetterBox: React.FC<Props> = ({
 }) => {
   return (
     <div className="d-flex" onClick={onClick}>
-        <div
-          className={`wf-5 hf-5 ${show ? "" : "bg-secondary"} rounded-2 opacity-25 ${
-            isActive ? "border border-3 border-black" : ""
-          }`}
-        >
-          <h1 className="text-black fw-bolder opacity-100">{letter}</h1>
-        </div>
+      <div
+        className={`wf-5 hf-5 ${show ? "" : "bg-secondary"} rounded-2 opacity-25 ${
+          isActive ? "border border-3 border-black" : ""
+        }`}
+      >
+        <h1 className="text-black fw-bolder opacity-100">
+          {show ? correctLetter : letter}
+        </h1>
+      </div>
     </div>
   );
 };

@@ -22,9 +22,8 @@ const WordCard = () => {
   const [currentWord, setCurrentWord] = useState<string>(getRandomWord());
   const [synonym, setSynonym] = useState<string>("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [curInput, setCurInput] = useState<string[]>(
-    new Array(currentWord.length),
-  );
+  const [curInput, setCurInput] = useState<string[]>([]);
+  const [hints, setHints] = useState<number[]>([]);
 
   const entry = dictionary[currentWord];
 
@@ -32,19 +31,40 @@ const WordCard = () => {
     if (currentWord) {
       setSynonym(getRandomSynonym(dictionary[currentWord]));
       setIsCorrect(null);
+      setCurInput(new Array(synonym.length));
     }
   }, [currentWord]);
+
+  // useEffect(() => {
+  //   if (!isCorrect) { // user is wrong and we should give a hint
+  //     // setCurInput(new Array(currentWord.length))
+  //     let randomIndex = Math.floor(Math.random() * synonym.length);
+  //     while (hints?.includes(randomIndex)) {
+  //       randomIndex = Math.floor(Math.random() * synonym.length);
+  //     }
+  //     setHints(prev => [...prev, randomIndex])
+  //   }
+  // }, [isCorrect])
 
   const handleNewWord = () => {
     setCurrentWord(getRandomWord());
   };
 
   const verifyWord = () => {
-    console.log(curInput, "this is the cur input", synonym)
+    console.log(curInput, "this is the cur input", synonym);
     if (curInput.join("").toLowerCase() === synonym) {
       setIsCorrect(true);
     } else {
       setIsCorrect(false);
+      setCurInput(new Array(synonym.length))
+      setTimeout(() => {
+        setIsCorrect(null);
+      }, 3000); // 3 seconds
+      let randomIndex = Math.floor(Math.random() * synonym.length);
+      while (hints?.includes(randomIndex)) {
+        randomIndex = Math.floor(Math.random() * synonym.length);
+      }
+      setHints((prev) => [...prev, randomIndex]);
     }
   };
 
@@ -63,6 +83,7 @@ const WordCard = () => {
         letters={curInput}
         onChange={(word) => setCurInput(word)}
         actualWord={synonym}
+        givenIndex={hints}
       />
       <button
         onClick={verifyWord}
