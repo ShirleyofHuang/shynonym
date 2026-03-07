@@ -19,21 +19,24 @@ const getRandomSynonym = (word: WordEntry): string => {
 };
 
 const WordCard = () => {
-  const [currentWord, setCurrentWord] = useState<string>(getRandomWord());
-  const [synonym, setSynonym] = useState<string>("");
+  const [currentWord] = useState(() => getRandomWord());
+  const [synonym] = useState(() => getRandomSynonym(dictionary[currentWord]));
+  // const [synonym, setSynonym] = useState<string>("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [curInput, setCurInput] = useState<string[]>([]);
-  const [hints, setHints] = useState<number[]>([]);
+  const [curInput, setCurInput] = useState<string[]>(
+    new Array(synonym.length).fill(""),
+  );
+  const [hints, setHints] = useState<Record<number, string>>({});
 
   const entry = dictionary[currentWord];
 
-  useEffect(() => {
-    if (currentWord) {
-      setSynonym(getRandomSynonym(dictionary[currentWord]));
-      setIsCorrect(null);
-      setCurInput(new Array(synonym.length));
-    }
-  }, [currentWord]);
+  // useEffect(() => {
+  //   if (currentWord) {
+  //     // setSynonym(getRandomSynonym(dictionary[currentWord]));
+  //     setIsCorrect(null);
+  //     // setCurInput(new Array(synonym.length).fill(""));
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   if (!isCorrect) { // user is wrong and we should give a hint
@@ -46,9 +49,9 @@ const WordCard = () => {
   //   }
   // }, [isCorrect])
 
-  const handleNewWord = () => {
-    setCurrentWord(getRandomWord());
-  };
+  // const handleNewWord = () => {
+  //   setCurrentWord(getRandomWord());
+  // };
 
   const verifyWord = () => {
     console.log(curInput, "this is the cur input", synonym);
@@ -56,15 +59,27 @@ const WordCard = () => {
       setIsCorrect(true);
     } else {
       setIsCorrect(false);
-      setCurInput(new Array(synonym.length))
+      setCurInput(new Array(synonym.length));
       setTimeout(() => {
         setIsCorrect(null);
       }, 3000); // 3 seconds
       let randomIndex = Math.floor(Math.random() * synonym.length);
-      while (hints?.includes(randomIndex)) {
+      while (hints[randomIndex]) {
         randomIndex = Math.floor(Math.random() * synonym.length);
       }
-      setHints((prev) => [...prev, randomIndex]);
+      // Update hints
+      setHints((prev) => ({
+        ...prev, // copy existing hints
+        [randomIndex]: synonym.charAt(randomIndex), // reveal new letter
+      }));
+
+      // Also update curInput at the same index
+      setCurInput((prev) => {
+        const next = [...prev];
+        next[randomIndex] = synonym.charAt(randomIndex);
+        return next;
+      });
+      //  setHints((prev) => (prev[randomIndex] = synonym.charAt(randomIndex)));
     }
   };
 
@@ -76,7 +91,6 @@ const WordCard = () => {
           {isCorrect ? "You are right!" : "Wrong answer!"}
         </p>
       )}
-      {console.log(curInput)}
       <p>The synonym has: {synonym.length} letters</p>
       <WordInput
         maxLength={synonym.length}
@@ -94,7 +108,7 @@ const WordCard = () => {
         Submit
       </button>
 
-      <button onClick={handleNewWord}>New Random Word</button>
+      {/* <button onClick={handleNewWord}>New Random Word</button> */}
     </div>
   );
 };

@@ -7,7 +7,7 @@ interface Props {
   letters: string[];
   maxLength: number;
   onChange: (letters: string[]) => void;
-  givenIndex: number[];
+  givenIndex: Record<number, string>;
 }
 
 export const WordInput: React.FC<Props> = ({
@@ -17,28 +17,34 @@ export const WordInput: React.FC<Props> = ({
   onChange,
   givenIndex,
 }) => {
-  console.log(letters, "this is the current input");
-  const [cursorPos, setCursorPos] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  const firstEmpty = letters.findIndex(
+    (letter, i) => letter === "" && !givenIndex[i],
+  );
+  const cursorPos = firstEmpty === -1 ? letters.length - 1 : firstEmpty;
+
+  const lastFilledIndex = () => {
+    for (let i = letters.length - 1; i >= 0; i--) {
+      if (letters[i] !== "" && !givenIndex[i]) return i;
+    }
+    return 0; // fallback
+  };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const key = e.key.toUpperCase();
 
     if (key == "BACKSPACE") {
       const currentLetterPos = [...letters];
-      currentLetterPos[cursorPos] = "";
-      setCursorPos(cursorPos - 1 >= 0 ? cursorPos - 1 : 0);
+      currentLetterPos[lastFilledIndex()] = "";
       onChange?.(currentLetterPos);
       return;
     } else if (key.length === 1 && /[A-Z]/.test(key)) {
-      console.log("got key down", key);
       const currentLetterPos = [...letters];
       currentLetterPos[cursorPos] = key;
-      setCursorPos(cursorPos + 1 < maxLength ? cursorPos + 1 : cursorPos);
       onChange?.(currentLetterPos);
       return;
     } else {
@@ -53,9 +59,8 @@ export const WordInput: React.FC<Props> = ({
           <LetterBox
             onClick={() => {
               inputRef.current?.focus();
-              setCursorPos(index);
             }}
-            show={givenIndex.includes(index)}
+            show={!!givenIndex[index]}
             key={index}
             correctLetter={actualWord.charAt(index)}
             letter={letters[index]}

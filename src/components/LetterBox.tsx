@@ -21,7 +21,7 @@ export const LetterBox: React.FC<Props> = ({
         }`}
       >
         <h1 className="text-black fw-bolder opacity-100">
-          {show ? correctLetter : letter}
+          {show ? correctLetter.toUpperCase() : letter}
         </h1>
       </div>
     </div>

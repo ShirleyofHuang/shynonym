@@ -13,3 +13,4 @@
 
 - do not active the box
 - fix inputRef not focusing at all times
+- hint should not be clickable and should be skipped
