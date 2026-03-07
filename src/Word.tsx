@@ -59,7 +59,7 @@ const WordCard = () => {
       setIsCorrect(true);
     } else {
       setIsCorrect(false);
-      setCurInput(new Array(synonym.length));
+      setCurInput(new Array(synonym.length).fill(""));
       setTimeout(() => {
         setIsCorrect(null);
       }, 3000); // 3 seconds
@@ -74,14 +74,20 @@ const WordCard = () => {
       }));
 
       // Also update curInput at the same index
-      setCurInput((prev) => {
-        const next = [...prev];
-        next[randomIndex] = synonym.charAt(randomIndex);
-        return next;
-      });
+      console.log(hints, "these are the current hints");
       //  setHints((prev) => (prev[randomIndex] = synonym.charAt(randomIndex)));
     }
   };
+
+  useEffect(() => {
+    setCurInput((prev) => {
+      const next = [...prev];
+      Object.keys(hints).forEach((key) => {
+        next[Number(key)] = hints[Number(key)];
+      });
+      return next;
+    });
+  }, [hints]);
 
   return (
     <div className="d-flex flex-column">
@@ -102,7 +108,7 @@ const WordCard = () => {
       <button
         onClick={verifyWord}
         className="mt-5"
-        disabled={curInput.length !== synonym.length}
+        disabled={curInput.some((item) => item === "")}
       >
         {" "}
         Submit

@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { LetterBox } from "./LetterBox";
 
 interface Props {
-  // input: string,
   actualWord: string;
   letters: string[];
   maxLength: number;
@@ -23,31 +22,42 @@ export const WordInput: React.FC<Props> = ({
     inputRef.current?.focus();
   }, []);
 
-  const firstEmpty = letters.findIndex(
-    (letter, i) => letter === "" && !givenIndex[i],
-  );
-  const cursorPos = firstEmpty === -1 ? letters.length - 1 : firstEmpty;
+  const cursorPos = (() => {
+    const firstEmpty = letters.findIndex(
+      (letter, i) => letter === "" && !givenIndex[i],
+    );
+    console.log(firstEmpty, letters, "first empty");
+    return firstEmpty === -1 ? letters.length - 1 : firstEmpty;
+  })();
 
-  const lastFilledIndex = () => {
-    for (let i = letters.length - 1; i >= 0; i--) {
-      if (letters[i] !== "" && !givenIndex[i]) return i;
-    }
-    return 0; // fallback
-  };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const key = e.key.toUpperCase();
+    const currentLetters = [...letters]; // copy of latest state
 
-    if (key == "BACKSPACE") {
-      const currentLetterPos = [...letters];
-      currentLetterPos[lastFilledIndex()] = "";
-      onChange?.(currentLetterPos);
+    // recompute cursor on each keypress
+    const firstEmpty = currentLetters.findIndex(
+      (l, i) => l === "" && !givenIndex[i],
+    );
+    const cursorPos =
+      firstEmpty === -1 ? currentLetters.length - 1 : firstEmpty;
+
+    // find last filled index for backspace
+    const lastFilled = (() => {
+      for (let i = currentLetters.length - 1; i >= 0; i--) {
+        if (currentLetters[i] !== "" && !givenIndex[i]) return i;
+      }
+      return 0;
+    })();
+
+    if (key === "BACKSPACE") {
+      currentLetters[lastFilled] = "";
+      onChange?.(currentLetters);
       return;
-    } else if (key.length === 1 && /[A-Z]/.test(key)) {
-      const currentLetterPos = [...letters];
-      currentLetterPos[cursorPos] = key;
-      onChange?.(currentLetterPos);
-      return;
-    } else {
+    }
+
+    if (key.length === 1 && /[A-Z]/.test(key)) {
+      currentLetters[cursorPos] = key;
+      onChange?.(currentLetters);
       return;
     }
   };
