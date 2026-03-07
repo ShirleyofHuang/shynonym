@@ -54,7 +54,6 @@ const WordCard = () => {
   // };
 
   const verifyWord = () => {
-    console.log(curInput, "this is the cur input", synonym);
     if (curInput.join("").toLowerCase() === synonym) {
       setIsCorrect(true);
     } else {
@@ -74,7 +73,6 @@ const WordCard = () => {
       }));
 
       // Also update curInput at the same index
-      console.log(hints, "these are the current hints");
       //  setHints((prev) => (prev[randomIndex] = synonym.charAt(randomIndex)));
     }
   };

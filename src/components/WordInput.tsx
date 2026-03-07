@@ -26,7 +26,6 @@ export const WordInput: React.FC<Props> = ({
     const firstEmpty = letters.findIndex(
       (letter, i) => letter === "" && !givenIndex[i],
     );
-    console.log(firstEmpty, letters, "first empty");
     return firstEmpty === -1 ? letters.length - 1 : firstEmpty;
   })();
 
