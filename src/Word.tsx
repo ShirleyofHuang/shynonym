@@ -3,6 +3,8 @@ import dictionaryData from "./synonyms/synonyms.json";
 import type { Dictionary, WordEntry } from "./types/types";
 import { Definition } from "./components/Definition";
 import { WordInput } from "./components/WordInput";
+import { useTemporaryState } from "./hooks/useTemporaryState";
+import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 
 const dictionary = dictionaryData as Dictionary;
 const words = Object.keys(dictionary);
@@ -21,36 +23,17 @@ const WordCard = () => {
   const [currentWord] = useState(() => getRandomWord());
   const [synonym] = useState(() => getRandomSynonym(dictionary[currentWord]));
   // const [synonym, setSynonym] = useState<string>("");
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [isCorrect, setIsCorrect] = useTemporaryState<boolean | null>(
+    null,
+    3000,
+  );
+  // const [showFirework, setShowFirework] = useTemporaryState<boolean | null>(null, 3000);
   const [curInput, setCurInput] = useState<string[]>(
     new Array(synonym.length).fill(""),
   );
   const [hints, setHints] = useState<Record<number, string>>({});
 
   const entry = dictionary[currentWord];
-
-  // useEffect(() => {
-  //   if (currentWord) {
-  //     // setSynonym(getRandomSynonym(dictionary[currentWord]));
-  //     setIsCorrect(null);
-  //     // setCurInput(new Array(synonym.length).fill(""));
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!isCorrect) { // user is wrong and we should give a hint
-  //     // setCurInput(new Array(currentWord.length))
-  //     let randomIndex = Math.floor(Math.random() * synonym.length);
-  //     while (hints?.includes(randomIndex)) {
-  //       randomIndex = Math.floor(Math.random() * synonym.length);
-  //     }
-  //     setHints(prev => [...prev, randomIndex])
-  //   }
-  // }, [isCorrect])
-
-  // const handleNewWord = () => {
-  //   setCurrentWord(getRandomWord());
-  // };
 
   const verifyWord = () => {
     if (curInput.join("").toLowerCase() === synonym) {
@@ -91,7 +74,7 @@ const WordCard = () => {
       <Definition word={currentWord} definition={entry.definition} />
       {isCorrect !== null && (
         <p style={{ color: isCorrect ? "green" : "red", fontWeight: "bold" }}>
-          {isCorrect ? "You are right!" : "Wrong answer!"}
+          {isCorrect ? <Fireworks autorun={{ speed: 3 }} /> : "Wrong answer!"}
         </p>
       )}
       <p>The synonym has: {synonym.length} letters</p>
