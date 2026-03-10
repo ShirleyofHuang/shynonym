@@ -16,7 +16,7 @@ export const LetterBox: React.FC<Props> = ({
   return (
     <div className="d-flex" onClick={onClick}>
       <div
-        className={`wf-5 hf-5 ${show ? "" : "bg-secondary"} rounded-2 opacity-25 ${
+        className={`wf-5 hf-5 text-center ${show ? "" : "bg-custom"} rounded-2 ${
           isActive ? "border border-3 border-black" : ""
         }`}
       >
